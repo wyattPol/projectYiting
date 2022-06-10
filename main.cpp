@@ -3,183 +3,29 @@
 #include<time.h>
 #include<vector>
 #include<algorithm>
+#include"gamepro.h"
 using namespace sf;
 using namespace std;
-/*
-class Dragon:public AnimatedAssets{
-public:
-    Texture *Tex;
-    Sprite dragonshape;
-    Dragon(Texture *Tex):AnimatedAssets(){
-        this->Tex=Tex;
-        this->dragonshape.setTexture(*Tex);
-        this->dragonshape.setScale(0.1,0.1);
-        this->dragonshape.setPosition(100,300);
-    }
-    void SingleAnimation(){
-        double speed=0;
-        double gra=150;
-        dragonshape.move(0,speed*gra);
-
-    }
-
-};*/
-class AnimatedAssets{
-public:
-    Texture *Tex;
-    AnimatedAssets(){
-        this->Tex=Tex;
-    }
-};
-class Explosion:public AnimatedAssets{
-public:
-    Explosion(Texture *Tex):AnimatedAssets(){
-    this->Tex=Tex;
-    this->exploshape.setTexture(*Tex);
-    this->exploshape.setScale(0.5,0.5);
-    this->exploshape.setPosition(-300,-300);
-    }
-    Texture *Tex;
-    Sprite exploshape;
-
-};
-class Bullet:public AnimatedAssets{
-public:
-    Sprite bulletshape;
-    Texture *bulletTex;
-    Bullet(Texture *bulletTex):AnimatedAssets(){
-        this->bulletTex=bulletTex;
-        this->bulletshape.setTexture(*bulletTex);
-        this->bulletshape.setScale(0.1,0.1);
-        this->bulletshape.setPosition(rand()%1550+50,0);
-    }
-};
-class ColorEnemy:public AnimatedAssets{
-public:
-    Sprite enemyshape;
-    Texture *colortex;
-    ColorEnemy(Texture *colortex):AnimatedAssets(){
-        this->colortex=colortex;
-        this->enemyshape.setTexture(*colortex);
-        this->enemyshape.setScale(0.13,0.13);
-        this->enemyshape.setPosition(1600,rand()%870+60);
-    }
-    void moveopposite(){
-        enemyshape.move(0,0);
-        enemyshape.move(5,-5);
-    }
-
-};
-
-class Player{
-public:
-    Sprite stardog;
-    Texture *starTex;
-    Player(Texture *starTex){
-        this->starTex=starTex;
-        this->stardog.setTexture(*starTex);
-        this->stardog.setScale(0.12,0.12);
-        this->stardog.setPosition(25,900);
-
-    }
-   /* void settarget(){
-        stardog.move(10,20);
-    }*/ //移动到指定点的函数
-};
-class BlueEnemy:public AnimatedAssets{
-public:
-    Sprite enemyshape;
-    Texture *bluetex;
-    BlueEnemy(Texture *bluetex):AnimatedAssets(){
-        this->bluetex=bluetex;
-        this->enemyshape.setTexture(*bluetex);
-        this->enemyshape.setScale(0.11,0.11);
-        this->enemyshape.setPosition(1600,rand()%870+60);
-    }
-    void moveopposite(){
-        enemyshape.move(0,0);
-        enemyshape.move(5,-5);
-
-    }
-
-};
-
-class Wall{
-public:
-    Sprite wallshape;
-    Texture *wallTex;
-    Wall(Texture *wallTex){
-        this->wallTex=wallTex;
-        this->wallTex->setRepeated(true);
-        this->wallshape.setTexture(*wallTex);
-        this->wallshape.setScale(0.5,0.5);
-        this->wallshape.setTextureRect(sf::IntRect(150, 100, 150, rand()%21+300));
-        this->wallshape.rotate(90);
-        this->wallshape.setPosition(rand()%1300+300,rand()%900+100);
-    }
-};
-void moveInDirection(Sprite &player,const sf::Time &elapsed, const sf::Keyboard::Key key)
-{
-    double speed_x=400;
-    double speed_y=400;
-    if(player.getGlobalBounds().left>=0 &&key==Keyboard::A)
-      {
-
-      player.move(-speed_x*elapsed.asSeconds(), 0);
-      }
-    if(player.getGlobalBounds().left+player.getGlobalBounds().width<1850&&key==Keyboard::D)
-      {
-
-      player.move(speed_x*elapsed.asSeconds(),0);
-      }
-    if(player.getGlobalBounds().top>=0&&key==Keyboard::W)
-      {
-
-       player.move(0,-speed_y*elapsed.asSeconds());
-      }
-    if(player.getGlobalBounds().top+player.getGlobalBounds().height<1000&&key==Keyboard::S)
-      {
-
-       player.move(0,speed_y*elapsed.asSeconds());
-      }
-}
 int main()
 {
    Clock clock;
    RenderWindow window(VideoMode(1600,1080),"DOG ROAD KILLER");
    window.setFramerateLimit(60);
-           srand(time(NULL));
-           sf::Time elapsed=clock.restart();
    //UI Init
    int level=0;
    int life=3;
    Font font,gamefont;
    font.loadFromFile("IMMORTAL.ttf");
    gamefont.loadFromFile("BebasNeue-Regular.ttf");
-   Text scores,gameover,lifes,easy,hard;
-   scores.setCharacterSize(40);
-   scores.setFont(font);
-   scores.setFillColor(Color::White);
-   scores.setPosition(30,30);
-   gameover.setFont(gamefont);
-   gameover.setCharacterSize(300);
-   gameover.setFillColor(Color::Red);
-   gameover.setPosition(400,300);
-   gameover.setString("GAME OVER");
-   lifes.setCharacterSize(40);
-   lifes.setFont(font);
-   lifes.setFillColor(Color::White);
-   lifes.setPosition(30,70);
-   easy.setFont(gamefont);
-   easy.setCharacterSize(300);
-   easy.setFillColor(Color::Red);
-   easy.setPosition(500,200);
-   easy.setString("E A S Y");
-   hard.setFont(gamefont);
-   hard.setCharacterSize(300);
-   hard.setFillColor(Color::Red);
-   hard.setPosition(500,600);
-   hard.setString("H A R D");
+   Gametext scores,gameover,lifes,easy,hard;
+   scores.SetText(&font,40,Color::White,30,30);
+   gameover.SetText(&gamefont,300,Color::Red,400,300);
+   gameover.gametext.setString("GAME OVER!");
+   lifes.SetText(&font,40,Color::White,30,70);
+   easy.SetText(&gamefont,300,Color::Red,500,200);
+   easy.gametext.setString("E A S Y");
+   hard.SetText(&gamefont,300,Color::Red,500,600);
+   hard.gametext.setString("H A R D");
    //Init Background
    int score=100;
    Sprite background;
@@ -198,8 +44,8 @@ int main()
    bullTex.loadFromFile("bullet.png");
    vector<Bullet> bullets;
    //Init Player
-   int speedmoveback=400;
    Texture starTex;
+   int speedmoveback=800;
    starTex.loadFromFile("stardog.png");
    Player player(&starTex);
    //Init Wall
@@ -222,6 +68,8 @@ int main()
    vector<ColorEnemy> colorenemies;
    colorenemies.push_back(ColorEnemy(&colortex));
  while (window.isOpen()){
+     srand(time(NULL));
+     sf::Time elapsed=clock.restart();
      Event event;
      while(window.pollEvent((event)))
     {
@@ -246,19 +94,20 @@ int main()
      if(event.type==sf::Event::KeyPressed && life!=0)
         {
          const sf::Keyboard::Key key =event.key.code;
-         moveInDirection(player.stardog,elapsed,key);
+         moveInDirection(player.shape,elapsed,key);
          for(size_t i=0;i<walls.size();i++)
           {
-             if(player.stardog.getGlobalBounds().intersects(walls[i].wallshape.getGlobalBounds()) && level==2)
+             while(player.shape.getGlobalBounds().intersects(walls[i].shape.getGlobalBounds()) && level==2)
              {
-                 if(key==Keyboard::A)
-                     player.stardog.move(speedmoveback*elapsed.asSeconds(),0);
+
+              if(key==Keyboard::A)
+                     player.shape.move(speedmoveback*elapsed.asSeconds(),0);
                   else if(key==Keyboard::D)
-                     player.stardog.move(-speedmoveback*elapsed.asSeconds(),0);
+                     player.shape.move(-speedmoveback*elapsed.asSeconds(),0);
                   else if(key==Keyboard::W)
-                     player.stardog.move(0,speedmoveback*elapsed.asSeconds());
+                     player.shape.move(0,speedmoveback*elapsed.asSeconds());
                   else if(key==Keyboard::S)
-                     player.stardog.move(0,-speedmoveback*elapsed.asSeconds());
+                     player.shape.move(0,-speedmoveback*elapsed.asSeconds());
               }
            }
          }
@@ -276,24 +125,24 @@ int main()
       }
     for(size_t i=0;i<bluenemies.size();i++)//wall and bluenemy collision detect
     {
-     bluenemies[i].enemyshape.move(-3,0);
+     bluenemies[i].shape.move(-200*elapsed.asSeconds(),0);
      for(size_t j=0;j<walls.size();j++)
      {
-         if(bluenemies[i].enemyshape.getGlobalBounds().intersects(walls[j].wallshape.getGlobalBounds()) && level==2)
-             bluenemies[i].moveopposite();
+         while(bluenemies[i].shape.getGlobalBounds().intersects(walls[j].shape.getGlobalBounds()) && level==2)
+             bluenemies[i].moveopposite(elapsed);
      }
         //player and bluenemy collision detect
-     if(bluenemies[i].enemyshape.getPosition().x<= 0-bluenemies[i].enemyshape.getGlobalBounds().width)
+     if(bluenemies[i].shape.getPosition().x<= 0-bluenemies[i].shape.getGlobalBounds().width)
          bluenemies.erase(bluenemies.begin()+i);
-     if(bluenemies[i].enemyshape.getGlobalBounds().intersects(player.stardog.getGlobalBounds()))
+     if(bluenemies[i].shape.getGlobalBounds().intersects(player.shape.getGlobalBounds()))
        {  score=score-10;
          bluenemies.erase(bluenemies.begin()+i);}
     }
   //BulletMove
     for(size_t i=0;i<bullets.size();i++)
     {
-        bullets[i].bulletshape.move(0,8);
-        if(bullets[i].bulletshape.getGlobalBounds().intersects(player.stardog.getGlobalBounds()))
+        bullets[i].shape.move(0,400*elapsed.asSeconds());
+        if(bullets[i].shape.getGlobalBounds().intersects(player.shape.getGlobalBounds()))
          {
             bullets.erase(bullets.begin()+i);
             life--;
@@ -311,72 +160,72 @@ int main()
     //wall and bluenemy collision detect
     for(size_t i=0;i<colorenemies.size();i++)//wall and bluenemy collision detect
     {
-     colorenemies[i].enemyshape.move(-3,0);
+     colorenemies[i].shape.move(-200*elapsed.asSeconds(),0);
      for(size_t j=0;j<walls.size();j++)
      {
-         if(colorenemies[i].enemyshape.getGlobalBounds().intersects(walls[j].wallshape.getGlobalBounds()) && level==2)
-             colorenemies[i].moveopposite();
+         while(colorenemies[i].shape.getGlobalBounds().intersects(walls[j].shape.getGlobalBounds()) && level==2)
+             colorenemies[i].moveopposite(elapsed);
      }
     }
      //player and colorenemy collision detect
    for(size_t i=0;i<colorenemies.size();i++)//player and colorenemy collision detect
    {
-    colorenemies[i].enemyshape.move(-2,0);
-    if(colorenemies[i].enemyshape.getPosition().x<= 0-colorenemies[i].enemyshape.getGlobalBounds().width)
+    colorenemies[i].shape.move(-2,0);
+    if(colorenemies[i].shape.getPosition().x<= 0-colorenemies[i].shape.getGlobalBounds().width)
         colorenemies.erase(colorenemies.begin()+i);
-    if(colorenemies[i].enemyshape.getGlobalBounds().intersects(player.stardog.getGlobalBounds()))
+    if(colorenemies[i].shape.getGlobalBounds().intersects(player.shape.getGlobalBounds()))
     {
         colorenemies.erase(colorenemies.begin()+i);
         score+=40;
-        explosion.exploshape.setPosition(player.stardog.getPosition().x,player.stardog.getPosition().y);
+        explosion.shape.setPosition(player.shape.getPosition().x,player.shape.getPosition().y);
         break;
     }
 
    }
-  //PlayerMove
 
 }
 
   //UI Update
-   scores.setString("SCORE: "+to_string(score));
-   lifes.setString("Lifes: "+to_string(life));
+   scores.gametext.setString("SCORE: "+to_string(score));
+   lifes.gametext.setString("Lifes: "+to_string(life));
   //Draw
    window.clear();
    window.draw(background);
 if(level==0){
-   window.draw(easy);
-   window.draw(hard);}
+   window.draw(easy.gametext);
+   window.draw(hard.gametext);}
 if(level==2){
     for(size_t i=0;i<walls.size();i++)
     {
-        window.draw(walls[i].wallshape);
+        window.draw(walls[i].shape);
     }
 }
 if(level==1 || level==2){
    for(size_t i=0;i<bluenemies.size();i++)
    {
-    window.draw(bluenemies[i].enemyshape);
+    window.draw(bluenemies[i].shape);
 
     }
    for(size_t i=0;i<colorenemies.size();i++)
    {
-    window.draw(colorenemies[i].enemyshape);
+    window.draw(colorenemies[i].shape);
 
     }
 
    for(size_t i=0;i<bullets.size();i++)
    {
-       window.draw(bullets[i].bulletshape);
+       window.draw(bullets[i].shape);
    }
-   window.draw(explosion.exploshape);
-   window.draw(player.stardog);
-   window.draw(scores);
-   window.draw(lifes);
+   window.draw(explosion.shape);
+   window.draw(player.shape);
+   window.draw(scores.gametext);
+   window.draw(lifes.gametext);
    if(life==0){
-       window.draw(gameover);
+       window.draw(gameover.gametext);
    }
 }
    window.display();
    }
     return 0;
 }
+
