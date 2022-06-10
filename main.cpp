@@ -1,5 +1,6 @@
 #include <iostream>
 #include<SFML/Graphics.hpp>
+#include<SFML/Audio.hpp>//add background music
 #include<time.h>
 #include<vector>
 #include<algorithm>
@@ -34,6 +35,11 @@ int main()
    background.setScale(float(window.getSize().x)/float(backTex.getSize().x),
                    float(window.getSize().y)/float(backTex.getSize().y));
    background.setTexture(backTex);
+   Music bgm;
+   bgm.openFromFile("phonybgm.wav");
+   bgm.play();
+   bgm.setVolume(50.f);
+   bgm.setLoop(true);
    //Init explosion
    Texture exploTex;
    exploTex.loadFromFile("explosion.png");
@@ -68,6 +74,7 @@ int main()
    vector<ColorEnemy> colorenemies;
    colorenemies.push_back(ColorEnemy(&colortex));
  while (window.isOpen()){
+
      srand(time(NULL));
      sf::Time elapsed=clock.restart();
      Event event;
@@ -191,6 +198,7 @@ int main()
   //Draw
    window.clear();
    window.draw(background);
+
 if(level==0){
    window.draw(easy.gametext);
    window.draw(hard.gametext);}
